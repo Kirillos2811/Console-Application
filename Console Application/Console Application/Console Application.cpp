@@ -1,21 +1,18 @@
 ﻿#include <stdio.h>
 
 int main(){	
-	int a, b;
-	printf("a = ");
-	scanf_s("%i", &a);
-	printf("b = ");
-	scanf_s("%i", &b);
-	if (a == b) {
-		printf("Equal");
+	int pin1, pin2;
+	printf("pin1 = ");
+	scanf_s("%i", &pin1);
+	printf("pin2 = ");
+	scanf_s("%i", &pin2);
+	int pass1 = 111;
+	int pass2 = 222;
+	if (pin1 == pass1 && pin2 == pass2) {
+		printf("OK");
 	}
 	else {
-		if (a > b) {
-			printf("Bigger");
-		}
-		else {
-			printf("Smaller");
-		}
+		printf("ERROR");
 	}
 }
 
