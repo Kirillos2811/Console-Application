@@ -1,18 +1,49 @@
 ﻿#include <stdio.h>
 
 int main(){	
-	int pin1, pin2;
-	printf("pin1 = ");
-	scanf_s("%i", &pin1);
-	printf("pin2 = ");
-	scanf_s("%i", &pin2);
-	int pass1 = 111;
-	int pass2 = 222;
-	if (pin1 == pass1 && pin2 == pass2) {
-		printf("OK");
+	int day;
+	printf("Day number = ");
+	scanf_s("%i", &day);
+	switch(day)
+	{
+	case 1:
+	{
+		printf("Monday");
 	}
-	else {
-		printf("ERROR");
+	break;
+	case 2:
+	{
+		printf("Tuesday");
+	}
+	break;
+	case 3:
+	{
+		printf("Wednesday");
+	}
+	break;
+	case 4:
+	{
+		printf("Thursday");
+	}
+	break;
+	case 5:
+	{
+		printf("Friday");
+	}
+	break;
+	case 6:
+	{
+		printf("Saturday");
+	}
+	break;
+	case 7:
+	{
+		printf("Sunday");
+	}
+	break;
+	default:{
+		printf("Error");
+	}
 	}
 }
 
