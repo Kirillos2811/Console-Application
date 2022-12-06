@@ -1,8 +1,10 @@
 ﻿#include <stdio.h>
 
 int main(){	
-	for (int i = 1; i < 10; i++) {
-		printf("5 * %i = %i\n", i, 5 * i);
+	int sum = 0;
+	for (int i = 1; i < 101; i++) {
+		sum += i;
 	}
+	printf("Sum:%i", sum);
 }
 
