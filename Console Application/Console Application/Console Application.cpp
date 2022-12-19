@@ -1,27 +1,24 @@
 ﻿#include <stdio.h>
 
 int main(){	
-	int arr[100];
-	int n, max, min, sum;
-	float average;
-	printf("Enter the amount of elements: ");
+	int arr[100][100];
+	int n, m;
+	printf("Enter the amount of rows: ");
 	scanf_s("%i", &n);
-	printf("Enter the array:\n");
-	for(int i = 0; i < n; i++) {
-		scanf_s("%i", &arr[i]);
-	}
-	max = min = arr[0];
-	sum = 0;
+	printf("Enter the amount of columns: ");
+	scanf_s("%i", &m);
+	printf("Enter the elements:\n");
 	for (int i = 0; i < n; i++) {
-		if (arr[i] > max) {
-			max = arr[i];
+		for (int j = 0; j < m; j++) {
+			scanf_s("%i", &arr[i][j]);
 		}
-		if (arr[i] < min) {
-			min = arr[i];
-		}
-		sum += arr[i];
 	}
-	average = (float)sum / (float)n;
-	printf("Min = %i; max = %i; sum = %i; average = %f", min, max, sum, average);
+	printf("Entered elements:\n");
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			printf("%4i", arr[i][j]);
+		}
+		printf("\n");
+	}
 }
 
