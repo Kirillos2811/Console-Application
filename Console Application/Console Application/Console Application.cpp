@@ -1,4 +1,6 @@
 ﻿#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main(){	
 	int arr[100][100];
@@ -7,13 +9,13 @@ int main(){
 	scanf_s("%i", &n);
 	printf("Enter the amount of columns: ");
 	scanf_s("%i", &m);
-	printf("Enter the elements:\n");
+	srand((unsigned int) time(NULL));
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
-			scanf_s("%i", &arr[i][j]);
+			arr[i][j] = rand()%(7-(-2)+1)+(-2);
 		}
 	}
-	printf("Entered elements:\n");
+	printf("Random elements of the array:\n");
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			printf("%4i", arr[i][j]);
