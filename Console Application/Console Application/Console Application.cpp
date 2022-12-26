@@ -1,6 +1,4 @@
 ﻿#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 int main(){	
 	int arr[100][100];
@@ -26,19 +24,24 @@ int main(){
 		}
 		printf("\n");
 	}
-	int temp_m = 0;
+
+	bool flag;
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < temp_m; j++) {
-			if (i != j) {
-				int buff = arr[i][j];
-				arr[i][j] = arr[j][i];
-				arr[j][i] = buff;
+		flag = true;
+		while(flag) {
+			flag = false;
+			for (int j = 0; j < m - 1; j++) {
+				if (arr[i][j] > arr[i][j + 1]) {
+					flag = true;
+					int buff = arr[i][j];
+					arr[i][j] = arr[i][j + 1];
+					arr[i][j + 1] = buff;
+				}
 			}
 		}
-		temp_m++;
 	}
 
-	printf("Inversed array:\n");
+	printf("Sorted array:\n");
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			printf("%4i", arr[i][j]);
