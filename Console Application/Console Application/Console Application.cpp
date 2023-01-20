@@ -40,7 +40,7 @@ int main()
 		float c = divide(0);
 		printf("1024 / 0 = %f", c);
 	}
-	catch (const std::exception& ex)
+	catch (const ZeroDivisionException& ex)
 	{
 		printf("Division failed for reason: %s", ex.what());
 	}
