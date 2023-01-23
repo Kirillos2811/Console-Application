@@ -1,49 +1,139 @@
 ﻿#include <stdio.h>
 #include <stdexcept>
+#include <math.h>
 
-class ZeroDivisionException : public std::runtime_error
+class Function
 {
+protected:
+	virtual float calc(float x) = 0;
+	
 public:
-	ZeroDivisionException() : std::runtime_error("Division by zero") {}
+	virtual void print(float x)
+	{
+		printf("y = %f\n", calc(x));
+	}
+
+	virtual ~Function() = default;
 };
 
-float divide(float value)
+class Parabola : public Function 
+{	
+	float a;
+
+	float calc(float x) override
+	{
+		return pow(x, a);
+	}
+
+public:
+	Parabola(float a)
+	{
+		this->a = a;
+	}
+};
+
+class Hiperbola : public Function
 {
-	try
+	float k;
+
+	float calc(float x) override
 	{
-		if (value != 0)
-		{
-			return 1024 / value;
-		}
-		else
-		{
-			throw ZeroDivisionException();
-		}
+		return k / x;
 	}
-	catch (const ZeroDivisionException& ex)
+
+public:
+	Hiperbola(float k)
 	{
-		printf("Inappropriate argument: 0\n");
-		throw;
+		this->k = k;
 	}
+};
+
+class Ellipse : public Function 
+{
+	float a, b;
+
+	float calc(float x) override
+	{
+		return sqrt((1 - (x * x) / (a * a)) * (b * b));
+	} 
+
+	void print(float x) override {
+		float y1 = calc(x);
+		float y2 = - y1;
+		printf("y = %f or y = %f\n", y1, y2);
+	}
+
+public:
+	Ellipse(float a, float b) 
+	{
+		this->a = a;
+		this->b = b;
+	}
+};
+
+
+void output_func_value(int& type, float& x, float& arg1, float& arg2) {
+	Function* func = NULL;
+	switch (type) {
+	case 1:
+		func = new Parabola(arg1);
+		break;
+	case 2:
+		func = new Hiperbola(arg1);
+		break;
+	case 3:
+		func = new Ellipse(arg1, arg2);
+		break;
+	default:
+		throw std::runtime_error("Unknown type to create with passed arguments");
+	}
+	func->print(x);
+	delete func;
+}
+
+void output_func_value(int& type, float& x, float& arg1) {
+	Function* func = NULL;
+	switch (type) {
+	case 1:
+		func = new Parabola(arg1);
+		break;
+	case 2:
+		func = new Hiperbola(arg1);
+		break;
+	default:
+		throw std::runtime_error("Unknown type to create with passed arguments");
+	}
+	func->print(x);
+	delete func;
 }
 
 int main()
-{  
+{
+	int type;
+	float x, arg1, arg2;
 	try 
 	{
-		float a = divide(5);
-		printf("1024 / 5 = %f\n", a);
+		type = 1;
+		x = 5;
+		arg1 = 2;
+		output_func_value(type, x, arg1);
 
-		float b = divide(342);
-		printf("1024 / 342 = %f\n", b);
+		type = 2;
+		arg1 = 1;
+		output_func_value(type, x, arg1);
 
-		float c = divide(0);
-		printf("1024 / 0 = %f", c);
+		type = 3;
+		arg1 = 18;
+		arg2 = 2;
+		output_func_value(type, x, arg1, arg2);
+
+		output_func_value(type, x, arg1);
 	}
-	catch (const ZeroDivisionException& ex)
+	catch (const std::exception& ex) 
 	{
-		printf("Division failed for reason: %s", ex.what());
+		printf(ex.what());
 	}
+
 	return 0;
 }
 
