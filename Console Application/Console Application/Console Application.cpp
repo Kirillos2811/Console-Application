@@ -1,139 +1,113 @@
 ﻿#include <stdio.h>
-#include <stdexcept>
-#include <math.h>
 
-class Function
+const float PI = 3.14;
+
+class Figure
 {
-protected:
-	virtual float calc(float x) = 0;
-	
 public:
-	virtual void print(float x)
-	{
-		printf("y = %f\n", calc(x));
-	}
-
-	virtual ~Function() = default;
+	virtual float area() = 0;
 };
 
-class Parabola : public Function 
-{	
-	float a;
-
-	float calc(float x) override
-	{
-		return pow(x, a);
-	}
+class Parallelogram : public Figure 
+{
+private:
+	float a, h;
 
 public:
-	Parabola(float a)
+	Parallelogram() = default;
+	Parallelogram(float a, float h) 
 	{
 		this->a = a;
+		this->h = h;
+	}
+
+	float area() override
+	{
+		return a * h;
 	}
 };
 
-class Hiperbola : public Function
-{
-	float k;
-
-	float calc(float x) override
-	{
-		return k / x;
-	}
+class Circle : public Figure {
+private:
+	float r;
 
 public:
-	Hiperbola(float k)
+	Circle() = default;
+	Circle(float r)
 	{
-		this->k = k;
+		this->r = r;
+	}
+
+	float area() override
+	{
+		return PI * r * r;
 	}
 };
 
-class Ellipse : public Function 
+class Rectangle : public Parallelogram
 {
+private:
 	float a, b;
 
-	float calc(float x) override
-	{
-		return sqrt((1 - (x * x) / (a * a)) * (b * b));
-	} 
-
-	void print(float x) override {
-		float y1 = calc(x);
-		float y2 = - y1;
-		printf("y = %f or y = %f\n", y1, y2);
-	}
-
 public:
-	Ellipse(float a, float b) 
+	Rectangle(float a, float b)
 	{
 		this->a = a;
 		this->b = b;
 	}
+
+	float area() override
+	{
+		return a * b;
+	}
 };
 
-
-void output_func_value(int& type, float& x, float& arg1, float& arg2) {
-	Function* func = NULL;
-	switch (type) {
-	case 1:
-		func = new Parabola(arg1);
-		break;
-	case 2:
-		func = new Hiperbola(arg1);
-		break;
-	case 3:
-		func = new Ellipse(arg1, arg2);
-		break;
-	default:
-		throw std::runtime_error("Unknown type to create with passed arguments");
+class Square : public Parallelogram
+{
+private:
+	float a;
+public:
+	Square(float a)
+	{
+		this->a = a;
 	}
-	func->print(x);
-	delete func;
-}
 
-void output_func_value(int& type, float& x, float& arg1) {
-	Function* func = NULL;
-	switch (type) {
-	case 1:
-		func = new Parabola(arg1);
-		break;
-	case 2:
-		func = new Hiperbola(arg1);
-		break;
-	default:
-		throw std::runtime_error("Unknown type to create with passed arguments");
+	float area() override
+	{
+		return a * a;
 	}
-	func->print(x);
-	delete func;
-}
+};
+
+class Rhombus : public Parallelogram
+{
+private:
+	float d1, d2;
+public:
+	Rhombus(float d1, float d2)
+	{
+		this->d1 = d1;
+		this->d2 = d2;
+	}
+
+	float area() override
+	{
+		return 0.5 * d1 * d2;
+	}
+};
 
 int main()
 {
-	int type;
-	float x, arg1, arg2;
-	try 
-	{
-		type = 1;
-		x = 5;
-		arg1 = 2;
-		output_func_value(type, x, arg1);
+	Parallelogram p = Parallelogram(2, 5);
+	Circle c = Circle(10);
+	Rectangle r = Rectangle(5, 10);
+	Square s = Square(20);
+	Rhombus rh = Rhombus(10, 30);
 
-		type = 2;
-		arg1 = 1;
-		output_func_value(type, x, arg1);
-
-		type = 3;
-		arg1 = 18;
-		arg2 = 2;
-		output_func_value(type, x, arg1, arg2);
-
-		output_func_value(type, x, arg1);
-	}
-	catch (const std::exception& ex) 
-	{
-		printf(ex.what());
-	}
-
+	printf("Parallelogram area: %f\n", p.area());
+	printf("Circle area: %f\n", c.area());
+	printf("Rectangle area: %f\n", r.area());
+	printf("Square area: %f\n", s.area());
+	printf("Rombus area: %f\n", rh.area());
 	return 0;
 }
 
