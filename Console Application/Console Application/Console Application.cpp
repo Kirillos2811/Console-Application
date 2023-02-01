@@ -1,113 +1,52 @@
 ﻿#include <stdio.h>
 
-const float PI = 3.14;
+float getFullRepaymentAmount(float creditAmount, float percentage, float repayment_periods) {
+	return creditAmount + (percentage / 100) * ((repayment_periods + 1) / 2) * creditAmount;
+}
 
-class Figure
-{
-public:
-	virtual float area() = 0;
-};
+float getPercentRepaymentAmount(float restCreditBodyAmount, float percentage) {
+	return restCreditBodyAmount * (percentage / 100);
+}
 
-class Parallelogram : public Figure 
-{
-private:
-	float a, h;
-
-public:
-	Parallelogram() = default;
-	Parallelogram(float a, float h) 
-	{
-		this->a = a;
-		this->h = h;
-	}
-
-	float area() override
-	{
-		return a * h;
-	}
-};
-
-class Circle : public Figure {
-private:
-	float r;
-
-public:
-	Circle() = default;
-	Circle(float r)
-	{
-		this->r = r;
-	}
-
-	float area() override
-	{
-		return PI * r * r;
-	}
-};
-
-class Rectangle : public Parallelogram
-{
-private:
-	float a, b;
-
-public:
-	Rectangle(float a, float b)
-	{
-		this->a = a;
-		this->b = b;
-	}
-
-	float area() override
-	{
-		return a * b;
-	}
-};
-
-class Square : public Parallelogram
-{
-private:
-	float a;
-public:
-	Square(float a)
-	{
-		this->a = a;
-	}
-
-	float area() override
-	{
-		return a * a;
-	}
-};
-
-class Rhombus : public Parallelogram
-{
-private:
-	float d1, d2;
-public:
-	Rhombus(float d1, float d2)
-	{
-		this->d1 = d1;
-		this->d2 = d2;
-	}
-
-	float area() override
-	{
-		return 0.5 * d1 * d2;
-	}
-};
+float getCreditBodyRepaymentAmount(float creditAmount, float repaymentPeriods) {
+	return creditAmount / repaymentPeriods;
+}
 
 int main()
 {
-	Parallelogram p = Parallelogram(2, 5);
-	Circle c = Circle(10);
-	Rectangle r = Rectangle(5, 10);
-	Square s = Square(20);
-	Rhombus rh = Rhombus(10, 30);
+	float price, creditAmount, pr_payment, percentage, repayment_periods;
 
-	printf("Parallelogram area: %f\n", p.area());
-	printf("Circle area: %f\n", c.area());
-	printf("Rectangle area: %f\n", r.area());
-	printf("Square area: %f\n", s.area());
-	printf("Rombus area: %f\n", rh.area());
+	printf("Enter a credit amount: ");
+	scanf_s("%f", &price);
+
+	printf("Enter the primary payment: ");
+	scanf_s("%f", &pr_payment);
+
+	printf("Enter a credit percentage: ");
+	scanf_s("%f", &percentage);
+
+	printf("Enter the amount of repayment periods: ");
+	scanf_s("%f", &repayment_periods);
+
+	creditAmount = price - pr_payment;
+	float creditBodyRepaymentAmount = getCreditBodyRepaymentAmount(creditAmount, repayment_periods);
+	float restRepaymentAmount = getFullRepaymentAmount(creditAmount, percentage, repayment_periods);
+
+	printf("Month		Payment        Percent amount        Rest amount\n");
+	for (int i = 0; i < repayment_periods; i++) {
+		printf("%5i", i + 1);
+
+		float restCreditBodyAmount = creditAmount - creditBodyRepaymentAmount * i;
+		float percentRepaymentAmount = getPercentRepaymentAmount(restCreditBodyAmount, percentage);
+		float repaymentAmount = creditBodyRepaymentAmount + percentRepaymentAmount;
+
+		printf("%18f", repaymentAmount);
+		printf("%22f", percentRepaymentAmount);
+		printf("%19f\n", restRepaymentAmount);
+
+		restRepaymentAmount -= repaymentAmount;
+	}
+
 	return 0;
 }
 
