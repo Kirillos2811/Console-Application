@@ -1,50 +1,38 @@
 ﻿#include <stdio.h>
-
-float getFullRepaymentAmount(float creditAmount, float percentage, float repayment_periods) {
-	return creditAmount + (percentage / 100) * ((repayment_periods + 1) / 2) * creditAmount;
-}
-
-float getPercentRepaymentAmount(float restCreditBodyAmount, float percentage) {
-	return restCreditBodyAmount * (percentage / 100);
-}
-
-float getCreditBodyRepaymentAmount(float creditAmount, float repaymentPeriods) {
-	return creditAmount / repaymentPeriods;
-}
+#include <string>
 
 int main()
 {
-	float price, creditAmount, pr_payment, percentage, repayment_periods;
+	std::system("chcp 1251");
+	int amount;
+	char surnames[100][100];
 
-	printf("Enter a credit amount: ");
-	scanf_s("%f", &price);
+	printf("Enter the amount of surnames:\n");
+	scanf_s("%i\n", &amount);
+	
+	for (int i = 0; i < amount; i++) {
+		gets_s(surnames[i]);
+	}
 
-	printf("Enter the primary payment: ");
-	scanf_s("%f", &pr_payment);
+	for (int j = 0; j < amount; j++) {
+		bool flag = false;
+		for (int i = 0; i < amount - 1; i++) {
+			if ((int)surnames[i][0] > (int)surnames[i + 1][0]) {
+				flag = true;
+				char buff[100];
+				strcpy_s(buff, surnames[i]);
+				strcpy_s(surnames[i], surnames[i + 1]);
+				strcpy_s(surnames[i + 1], buff);
+			}
+		}
+		if (!flag) {
+			break;
+		}
+	}
 
-	printf("Enter a credit percentage: ");
-	scanf_s("%f", &percentage);
-
-	printf("Enter the amount of repayment periods: ");
-	scanf_s("%f", &repayment_periods);
-
-	creditAmount = price - pr_payment;
-	float creditBodyRepaymentAmount = getCreditBodyRepaymentAmount(creditAmount, repayment_periods);
-	float restRepaymentAmount = getFullRepaymentAmount(creditAmount, percentage, repayment_periods);
-
-	printf("Month		Payment        Percent amount        Rest amount\n");
-	for (int i = 0; i < repayment_periods; i++) {
-		printf("%5i", i + 1);
-
-		float restCreditBodyAmount = creditAmount - creditBodyRepaymentAmount * i;
-		float percentRepaymentAmount = getPercentRepaymentAmount(restCreditBodyAmount, percentage);
-		float repaymentAmount = creditBodyRepaymentAmount + percentRepaymentAmount;
-
-		printf("%18f", repaymentAmount);
-		printf("%22f", percentRepaymentAmount);
-		printf("%19f\n", restRepaymentAmount);
-
-		restRepaymentAmount -= repaymentAmount;
+	printf("Sorted surnames:\n");
+	for (int i = 0; i < amount; i++) {
+		puts(surnames[i]);
 	}
 
 	return 0;
